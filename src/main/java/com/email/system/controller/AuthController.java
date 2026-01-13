@@ -1,6 +1,7 @@
 package com.email.system.controller;
 
 import com.email.system.dto.UserRequestDto;
+import com.email.system.dto.LoginRequestDto;
 import com.email.system.dto.ResponseDto;
 import com.email.system.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,11 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<ResponseDto> register(@RequestBody UserRequestDto dto) {
         return userService.registerUser(dto);
+    }
+    
+    @PostMapping("/login")
+    public ResponseEntity<ResponseDto> login(@RequestBody LoginRequestDto request) {
+        return userService.loginUser(request);
     }
 }
 

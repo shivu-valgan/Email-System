@@ -5,6 +5,8 @@ import java.util.Date;
 
 import org.springframework.stereotype.Component;
 
+import com.email.system.enums.UserRole;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -17,10 +19,10 @@ public class JwtUtil {
 	private static final long EXPIRATION_TIME = 1000 * 60 * 60;
 	private static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 	
-	public String generateToken(String email, String role) {
+	public String generateToken(String email, UserRole role) {
         return Jwts.builder()
                 .setSubject(email)
-                .claim("role", role)
+                .claim("role", role.name())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(SECRET_KEY)
@@ -49,8 +51,9 @@ public class JwtUtil {
         return getClaims(token).getSubject();
     }
 	
-	public String extractRole(String token) {
-        return getClaims(token).get("role",String.class);
+	public UserRole extractRole(String token) {
+        String role = getClaims(token).get("role",String.class);
+        return UserRole.valueOf(role);
     }
 	
 	

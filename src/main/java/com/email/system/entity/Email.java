@@ -2,6 +2,8 @@ package com.email.system.entity;
 
 import java.time.LocalDateTime;
 
+import com.email.system.enums.EmailStatus;
+import com.email.system.enums.EmailType;
 import com.email.system.enums.UserRole;
 
 import jakarta.persistence.Column;
@@ -11,7 +13,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,40 +21,33 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "users")
+@Table(name = "emails")
+@Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class User {
+public class Email {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    @Column(nullable = false)
-    private String fullName;
 
-    @Column(unique = true, nullable = false)
-    private String email;
+    private String fromEmail;
+    private String toEmail;
 
-    @Column(nullable = false)
-    private String password;
+    private String subject;
 
-    @Column(nullable = false)
-    @Builder.Default
+    @Column(columnDefinition = "TEXT")
+    private String body;
+
     @Enumerated(EnumType.STRING)
-    private UserRole role = UserRole.USER;
+    private EmailStatus status; // SENT, FAILED
 
-    @Column(nullable = false)
-    @Builder.Default
-    private boolean enabled = true;
-    
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-    
-    @PrePersist
-    protected void onCreate() {
-    	this.createdAt = LocalDateTime.now();
-    }
+    @Enumerated(EnumType.STRING)
+    private EmailType type; // OUTBOUND, INBOUND
+
+    private LocalDateTime sentAt;
+
+    @ManyToOne
+    private User user; // owner
 }

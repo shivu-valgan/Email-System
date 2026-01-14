@@ -9,6 +9,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.email.system.enums.UserRole;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,7 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			
 			if(jwtUtil.isTokenValid(token)) {
 				String email = jwtUtil.extractEmail(token);
-				String role = jwtUtil.extractRole(token);
+				UserRole role = jwtUtil.extractRole(token);
 				
 				UsernamePasswordAuthenticationToken auth =
                         new UsernamePasswordAuthenticationToken(

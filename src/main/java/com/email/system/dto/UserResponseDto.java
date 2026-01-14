@@ -2,6 +2,7 @@ package com.email.system.dto;
 
 import java.time.LocalDateTime;
 
+import com.email.system.enums.UserRole;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import lombok.AllArgsConstructor;
@@ -14,7 +15,7 @@ public class UserResponseDto {
 	private Long id;
 	private String fullName;
 	private String email;
-	private String role;
+	private UserRole role;
 	private boolean enabled;
 	private LocalDateTime createdAt;
 

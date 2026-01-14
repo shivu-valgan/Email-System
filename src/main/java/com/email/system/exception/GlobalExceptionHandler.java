@@ -54,6 +54,18 @@ public class GlobalExceptionHandler {
 
         ErrorResponseDto error = new ErrorResponseDto(
                 ex.getMessage(),
+                HttpStatus.BAD_REQUEST.value(),
+                LocalDateTime.now()
+        );
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
+    }
+	
+	@ExceptionHandler(EmailSendingFailedException.class)
+    public ResponseEntity<ErrorResponseDto> handleFailedMailException(EmailSendingFailedException ex) {
+
+        ErrorResponseDto error = new ErrorResponseDto(
+                ex.getMessage(),
                 HttpStatus.UNAUTHORIZED.value(),
                 LocalDateTime.now()
         );
@@ -80,5 +92,8 @@ public class GlobalExceptionHandler {
 
 	    return ResponseEntity.badRequest().body(error);
 	}
+	
+	
+	
 
 }
